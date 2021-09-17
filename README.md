@@ -1,6 +1,7 @@
 # DSPharmacy
 # Τρόπος Λειτουργίας
 
+
 | Όνομα χρήστη | email | password | category |
 | ------------- | ------------- | ------------- | ------------- | 
 | Admin  | admin@infocinema.com | admin | admin |
