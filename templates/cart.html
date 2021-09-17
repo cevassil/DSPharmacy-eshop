@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block head %}
+	<meta charset="utf-8">
+	<title>{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+{% endblock %}
+
+{% block body %}
+	
+<nav class="navtop">
+	<div>
+		<h1>DSPharmacy</h1>
+		<a href="{{ url_for('index') }}"><i class="fas fa-home"></i>Αρχική</a>
+		<a href="{{ url_for('cart') }}"><i class="fas fa-shopping-cart"></i></i>Καλάθι</a>
+		<a href="{{ url_for('deluser') }}"><i class="fas fa-user-times"></i></i>Διαγραφή Χρήστη</a>
+		<a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Αποσύνδεση</a>
+	</div>
+</nav>
+<div class="content">
+		<div class="md-form mt-0" >
+			<form action="/search" method="post">
+                <input name="search" type="text">
+                <button type="submit">Αναζήτηση Προϊόντος</button>            
+            </form> 
+			{% for x in cart %}
+			<div class="container">
+				<h2 class='display-3'>{{x['name']}}<br></h2>
+				<h4>Price {{x['price']}} <br> Description: {{x['description']}} <br> Category: {{x['category']}}<br> Id: {{x['_id']}}  <br></h4>
+				<form action="{{url_for('cart') }}">
+				<button type="submit" value="Buy" href="{{ url_for('buy') }}">Αγορά</button>
+			</div>
+				
+			{% endfor %}
+		</div>
+	
+</div>
+	
+{% endblock %}

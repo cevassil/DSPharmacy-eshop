@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+	{% block head %}
+		<meta charset="utf-8">
+		<title>Register</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+	{% endblock %}
+	{% block body %}
+		<div class="register">
+			<h1>Εγγραφή</h1>
+			<div class="links">
+				<a href="{{ url_for('login') }}">Σύνδεση</a>
+				<a href="{{ url_for('register') }}" class="active">Εγγραφή</a>
+			</div>
+			<form action="{{ url_for('register') }}" method="POST" autocomplete="off">
+				<label for="username">
+					<i class="fas fa-user"></i>
+				</label>
+				<input type="text" name="username" placeholder="Όνομα Χρήστη" id="username" required>
+				<label for="password">
+					<i class="fas fa-lock"></i>
+				</label>
+				<input type="password" name="password" placeholder="Κωδικός Πρόσβασης" id="password" required>
+				<label for="email">
+					<i class="fas fa-envelope"></i>
+				</label>
+				<input type="email" name="email" placeholder="Email" id="email" required>
+				<label for="ssn">
+					<i class="fas fa-address-book"></i>
+				</label>			
+				<input type="text" name="ssn" minlength="11" maxlength="11" placeholder="AMKA" id="ssn" required>
+				<input type="submit" value="Register">
+			</form>
+	{% if error %}
+		<div class="alert alert-danger" role="alert">
+			Αυτά τα στοιχεία υπάρχουν ήδη ή ο ΑΜΚΑ δεν είναι έγκυρος παρακαλώ προσπαθήστε ξανά.
+		</div>
+	{% endif %}			
+		</div>
+	{% endblock %}

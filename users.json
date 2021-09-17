@@ -1,0 +1,26 @@
+[
+	{
+		"name": "Admin",
+		"email": "admin@dspharmacy.com",
+		"password": "admin",
+		"ssn": "19037500856",
+		"category": "admin",
+		"orderHistory": []
+	},
+	{
+		"name": "costas",
+		"email": "costas@mail.com",
+		"password": "costas",
+		"ssn": "01017054321",
+		"category": "user",
+		"orderHistory" : []
+	},
+	{
+		"name": "jim",
+		"email": "jim@mail.com",
+		"password": "jim",
+		"ssn": "31129912345",
+		"category": "user",
+		"orderHistory": []
+	}
+]

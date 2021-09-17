@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block head %}
+	<meta charset="utf-8">
+	<title>{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+{% endblock %}
+
+{% block body %}
+	
+<nav class="navtop">
+	<div>
+		<h1>Admin Panel</h1>
+		<a href="{{ url_for('addprod') }}"><i class="fas fa-plus-circle"></i></i></i>Προσθήκη προϊοντων</a>
+		<a href="{{ url_for('delprod') }}"><i class="fas fa-minus-circle"></i></i>Διαγραφή Προϊοντων</a>
+        <a href="{{ url_for('updateprod') }}"><i class="fas fa-edit"></i></i>Διαχείριση προϊόντων</a>
+		<a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Αποσύνδεση</a>
+	</div>
+</nav>
+<div class="content">
+		<div class="md-form mt-0" >
+			<h1>Add product</h1>
+            <form action="{{ url_for('addprod') }}" method="post">
+				<input type="text" name="name" placeholder="Όνομα Προϊόντος" id="name" required>
+				<input type="text" name="category" placeholder="Κατηγορία" id="category" required>
+                <input type="text" name="quantity" placeholder="Απόθεμα" id="quantity" required>
+				<input type="text" name="description" placeholder="Περιγραφή" id="description" required>
+                <input type="text" name="price" placeholder="Τιμή" id="price" required>
+				<input type="submit" value="Προσθήκη στην Βάση">
+			</form>   
+		</div>
+	
+</div>
+	
+{% endblock %}
