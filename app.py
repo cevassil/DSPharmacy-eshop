@@ -1,4 +1,6 @@
+from os import name, removedirs
 import re
+from types import MethodDescriptorType
 from bson import ObjectId
 from pymongo import MongoClient
 from flask import Flask, render_template, request, redirect, session, url_for
@@ -124,7 +126,7 @@ def delprod():
 			id = request.form['id']
 			check = products.find_one({"_id": ObjectId(id)})
 			if not check :
-				redirect("/delprod")
+				return redirect("/delprod")
 			else:
 				products.delete_one( {"_id": ObjectId(id)})
 
@@ -134,27 +136,30 @@ def delprod():
 def updateprod():
 	if session['category'] == 'admin':
 		if request.method == "GET":
-			return render_template("updateprod.html", prod=products.find({}))
+			return render_template('updateprod.html', prod=products.find({}))
 		elif request.method == "POST":
-			id = request.form['id']
-			check = products.find_one({"_id": ObjectId(id)})
+			session["id"] = request.form['id']
+			check = products.find_one({"_id": ObjectId(session["id"])})
 			if not check :
-				redirect("/updateprod")
+				return render_template('updateprod.html', error=1, prod=products.find({}))
 			else:
-				name = request.form['name']
-				category = request.form['category']
-				quantity = request.form['quantity']
-				description = request.form['description']
-				price = request.form['price']
-				products.update_one({
-				"name": name,
-				"description": description,
-				"price": price,
-				"category": category,
-				"quantity": quantity
-				})
+				return redirect('/admin/updateprodfield')
+	else: return redirect('/logout')
 
-		return render_template('updateprod.html')
+@app.route("/admin/updateprodfield", methods=("GET", "POST"))
+def updateprodfield():
+	if session['category'] == 'admin':
+		if request.method == "GET":
+			name = products.find_one({"_id": ObjectId(session["id"])})["name"]
+			category = products.find_one({"_id": ObjectId(session["id"])})["category"]
+			quantity = products.find_one({"_id": ObjectId(session["id"])})["quantity"]
+			description = products.find_one({"_id": ObjectId(session["id"])})["description"]
+			price = products.find_one({"_id": ObjectId(session["id"])})["price"]
+			return render_template("updateprodfield.html", name=name, category=category, quantity=quantity, description=description, price=price)
+		if request.method == "POST":
+			print(session["id"])
+			products.update_one({"_id": ObjectId(session["id"])}, {"$set": {"name": request.form["name"], "category": request.form["category"], "quantity": request.form["quantity"], "description": request.form["description"], "price": request.form["price"]}})
+		return redirect("/admin/updateprod")
 
 
 #products Search function
