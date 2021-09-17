@@ -71,7 +71,6 @@ def login():
 				session['loggedin'] = True
 				session['category']	= check['category']
 				session['cart'] = []
-				session['id'] = 1
 				if session['category'] == 'admin':
 					return render_template('admin.html')
 				return redirect(url_for('index'))
@@ -134,6 +133,27 @@ def delprod():
 @app.route("/admin/updateprod", methods=("GET", "POST"))
 def updateprod():
 	if session['category'] == 'admin':
+		if request.method == "GET":
+			return render_template("updateprod.html", prod=products.find({}))
+		elif request.method == "POST":
+			id = request.form['id']
+			check = products.find_one({"_id": ObjectId(id)})
+			if not check :
+				redirect("/updateprod")
+			else:
+				name = request.form['name']
+				category = request.form['category']
+				quantity = request.form['quantity']
+				description = request.form['description']
+				price = request.form['price']
+				products.update_one({
+				"name": name,
+				"description": description,
+				"price": price,
+				"category": category,
+				"quantity": quantity
+				})
+
 		return render_template('updateprod.html')
 
 
@@ -174,10 +194,10 @@ def deluser():
 	return redirect("/logout")
 
 if __name__ == "__main__":
-	#if not 'users' in db.list_collection_names():
-		#with open('users.json') as f:
-			#user = json.load(f)	
-			#users.insert_many(user)
+	if not 'users' in db.list_collection_names():
+		with open('users.json') as f:
+			user = json.load(f)	
+			users.insert_many(user)
 	if not 'products' in db.list_collection_names():
 		with open('products.json') as p:
 			product = json.load(p)

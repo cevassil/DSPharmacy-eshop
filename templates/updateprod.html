@@ -20,7 +20,19 @@
 </nav>
 <div class="content">
 		<div class="md-form mt-0" >
-			<h1>Hello Admin.</h1>
+			<form action="{{ url_for('delprod') }}" method="post">
+				<input type="text" name="id" placeholder="ID" id="id" required>
+                <input type="submit" value="Αναζήτηση στην Βάση">
+			</form>
+			<h1>Edit product</h1>
+            <form action="{{ url_for('updateprod') }}" method="post">
+				<input type="text" name="name" placeholder="Όνομα Προϊόντος" id="name" required>
+				<input type="text" name="category" placeholder="Κατηγορία" id="category" required>
+                <input type="text" name="quantity" placeholder="Απόθεμα" id="quantity" required>
+				<input type="text" name="description" placeholder="Περιγραφή" id="description" required>
+                <input type="text" name="price" placeholder="Τιμή" id="price" required>
+				<input type="submit" value="Ενημέρωση βάσης">
+			</form>   
 		</div>
 	
 </div>

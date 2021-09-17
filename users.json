@@ -4,8 +4,7 @@
 		"email": "admin@dspharmacy.com",
 		"password": "admin",
 		"ssn": "19037500856",
-		"category": "admin",
-		"orderHistory": []
+		"category": "admin"
 	},
 	{
 		"name": "costas",
