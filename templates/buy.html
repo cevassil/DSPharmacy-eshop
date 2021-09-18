@@ -13,32 +13,26 @@
 	<div>
 		<h1>DSPharmacy</h1>
 		<a href="{{ url_for('index') }}"><i class="fas fa-home"></i>Αρχική</a>
-		<a href="{{ url_for('cart') }}"><i class="fas fa-user-circle"></i>Καλάθι</a>
+		<a href="{{ url_for('cart') }}"><i class="fas fa-shopping-cart"></i></i>Καλάθι</a>
 		<a href="{{ url_for('deluser') }}"><i class="fas fa-user-times"></i></i>Διαγραφή Χρήστη</a>
 		<a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Αποσύνδεση</a>
 	</div>
 </nav>
 <div class="content">
 		<div class="md-form mt-0" >
-            <form action="/search" method="post">
-                <input name="search" type="text">
-                <button type="submit">Αναζήτηση Ταινίας</button>            
-            </form> 
-			{% for x in mov %}
-			<div class="container">
-				<h2 class='display-3'>{{x['title']}}<br></h2>
-				<h4>Release Date: {{x['year']}} <br> Description: {{x['description']}} <br> Screenings: {{x['screening']}} <br> Seats left: {{x['seats']}}</h4>
-                <form action="{{ url_for('buy') }}" method="post">
-                    <label for="buy">
-                        <i class="fas fa-user"></i>
-                    </label>
-                    <input type="text" name="buy" placeholder="Αριθμός Εισιτηρίων" id="buy">                 
-                <button type="submit" value="Buy" href="{{ url_for('buy') }}">Buy Tickets</button> <hr>
-            </form>
-			</div>				
+			{% for x in cart %}
+				<div class="container">
+					<h2 class='display-3'>{{x[0]}}<br></h2>
+					<h4>Description: {{x[4]}} <br> Category: {{x[1]}}<br> Id: {{x[2]}} <br>Price {{x[5]}}€ <br></h4>
+					
+				</div>				
 			{% endfor %}
+			<h3>Το σύνολο σας είναι:{{totalprice}}€</h3>
+			<form action="{{ url_for('buy') }}" method="POST">
+				<input type="text" name="ccard" minlength="16" maxlength="16" placeholder="Card Number" id="ccard" required>
+				<input type="submit" value="Ολοκλήρωση αγοράς"> 
+			</form>
 		</div>
 	
-</div>
-	
+</div>	
 {% endblock %}

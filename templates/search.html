@@ -27,7 +27,7 @@
 			{% for x in prod %}
 			<div class="container">
 				<h2 class='display-3'>{{x['name']}}<br></h2>
-				<h4>Price {{x['price']}} <br> Description: {{x['description']}} <br> Category: {{x['category']}} <br> Id: {{x['_id']}} <br></h4>
+				<h4> Description: {{x['description']}} <br> Category: {{x['category']}}<br> Id: {{x['_id']}} <br> Price: {{x['price']}}€  <br></h4>
                 <form action="{{ url_for('cart') }}" method="POST">
 					<input type="hidden" value="{{x['_id']}}" name='forcart'>
 					<input type="submit" value="Προσθήκη στο καλάθι"> 

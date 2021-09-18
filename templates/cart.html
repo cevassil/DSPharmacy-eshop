@@ -20,17 +20,26 @@
 </nav>
 <div class="content">
 		<div class="md-form mt-0" >
+			{% if cart == [] %}
+			<a href="{{url_for('index') }}">Επιστροφή στην αρχική σελίδα για να προσθέσετε προϊοντα</a>
+			{% endif %}
 			{% for x in cart %}
 				<div class="container">
 					<h2 class='display-3'>{{x[0]}}<br></h2>
-					<h4>Price {{x[5]}} <br> Description: {{x[4]}} <br> Category: {{x[1]}}<br> Id: {{x[2]}} <br></h4>
+					<h4>Description: {{x[4]}} <br> Category: {{x[1]}}<br> Id: {{x[2]}} <br> Price {{x[5]}}€ <br></h4>
 					<form action="{{ url_for('delcart') }}" method="POST">
 						<input type="hidden" value="{{x[2]}}" name='delcart'>
 						<input type="submit" value="Αφαίρεση από το καλάθι"> 
 					</form>
+					
 				</div>				
 			{% endfor %}
+			<br>
+			{% if cart !=[] %}
+			<form action="{{ url_for('buy') }}" method="POST">
+				<input type="submit" value="Αγορά" name="tobuy"> 
+			</form>
+			{% endif %}
 		</div>
-	
 </div>	
 {% endblock %}
