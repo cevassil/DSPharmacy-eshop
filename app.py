@@ -1,6 +1,5 @@
-from os import name, removedirs
+from os import name
 import re
-from types import MethodDescriptorType
 from bson import ObjectId
 from pymongo import MongoClient
 from flask import Flask, render_template, request, redirect, session, url_for
@@ -94,7 +93,7 @@ def admin():
 	if session['category'] == 'admin':
 		return render_template('admin.html') 
 	else:
-		redirect('/index')
+		return redirect('/index')
 
 @app.route("/admin/addprod", methods=["GET", "POST"])
 def addprod():
@@ -104,9 +103,9 @@ def addprod():
 		elif request.method == "POST":
 			name = request.form['name']
 			category = request.form['category']
-			quantity = request.form['quantity']
+			quantity = int(request.form['quantity'])
 			description = request.form['description']
-			price = request.form['price']
+			price = int(request.form['price'])
 			check = products.find_one({"name": name})
 			if not check:
 				products.insert_one({
@@ -116,8 +115,9 @@ def addprod():
 				"category": category,
 				"quantity": quantity
 				})
-			redirect('/addprod')
+			return redirect('/admin/addprod')
 		return render_template('addprod.html')
+	else: return redirect('/logout')
 
 @app.route("/admin/delprod", methods=("GET", "POST"))
 def delprod():
@@ -128,11 +128,13 @@ def delprod():
 			id = request.form['id']
 			check = products.find_one({"_id": ObjectId(id)})
 			if not check :
-				return redirect("/delprod")
+				return redirect("/admin/delprod")
 			else:
 				products.delete_one( {"_id": ObjectId(id)})
+				return redirect("/admin/delprod")
 
 		return render_template('delprod.html', prod=products.find({}))
+	else: return redirect('/logout')
 
 @app.route("/admin/updateprod", methods=("GET", "POST"))
 def updateprod():
@@ -160,8 +162,9 @@ def updateprodfield():
 			return render_template("updateprodfield.html", name=name, category=category, quantity=quantity, description=description, price=price)
 		if request.method == "POST":
 			print(session["id"])
-			products.update_one({"_id": ObjectId(session["id"])}, {"$set": {"name": request.form["name"], "category": request.form["category"], "quantity": request.form["quantity"], "description": request.form["description"], "price": request.form["price"]}})
+			products.update_one({"_id": ObjectId(session["id"])}, {"$set": {"name": request.form["name"], "category": request.form["category"], "quantity": int(request.form["quantity"]), "description": request.form["description"], "price": int(request.form["price"])}})
 		return redirect("/admin/updateprod")
+	else: return redirect("/logout")
 
 
 #products Search function
@@ -174,6 +177,7 @@ def search():
 			prodsearch = request.form['search']	
 			prodresult = products.find({"name": prodsearch})
 			return render_template("search.html", mail=session['email'], prod=prodresult )
+	else: return redirect('/logout')		
 
 
 @app.route("/cart", methods=["GET", "POST"])
@@ -202,6 +206,7 @@ def cart():
 			session['cart'].append(request.form['forcart'])
 			session.modified=True
 			return redirect("/cart")
+	else: return redirect('/logout')
 
 @app.route("/delcart", methods=["GET", "POST"])
 def delcart():
@@ -210,21 +215,30 @@ def delcart():
 			session["cart"].remove(request.form['delcart'])
 			session.modified=True
 			return redirect('/cart')
-
+	else: return redirect('/logout')		
 
 
 #Cart buy function
 @app.route("/buy", methods=["GET", "POST"])
 def buy():
 	if session['loggedin'] == True:
-		product = products.find({})
-		return render_template("buy.html", mail=session['email'], prod=product)
+			cart= []
+			totalprice = 0
+			for i in session['cart']:
+				cartitems = products.find_one({'_id': ObjectId(i)})
+				totalprice += (cartitems['price'])
+				cart.append(cartitems)
+			return render_template("buy.html", mail=session['email'], cart=cart, totalprice=totalprice)
+	else: return redirect('logout')
+
 
 @app.route("/deluser")
 def deluser():
-	if session['category'] == 'user':
-		users.delete_one({ 'email': session['email'] })
-	return redirect("/logout")
+	if session['loggedin'] == True:
+		if session['category'] == 'user':
+			users.delete_one({ 'email': session['email'] })
+		return redirect("/logout")
+	else: return redirect('/logout')
 
 if __name__ == "__main__":
 	if not 'users' in db.list_collection_names():
