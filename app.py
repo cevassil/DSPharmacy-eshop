@@ -84,6 +84,8 @@ def login():
 def logout():
 	session.pop('email', None)
 	session.pop('loggedin', None)
+	session.pop('id', None)
+	session.pop('cart', None)
 	return redirect(url_for('login'))
 
 #Admin panel
@@ -167,7 +169,7 @@ def updateprodfield():
 def search():
 	if session['loggedin'] == True:
 		if request.method== "GET" :			
-				return render_template("search.html", mail=session['email'])		
+			return render_template("search.html", mail=session['email'])		
 		else:
 			prodsearch = request.form['search']	
 			prodresult = products.find({"name": prodsearch})
@@ -178,12 +180,38 @@ def search():
 def cart():
 	if session['loggedin'] == True:
 		if request.method=="GET":
-			return render_template("cart.html", mail=session['email'], cart=session['cart'])
-		# else:
-		# 	quantity = 1
-		# 	userid = session['id']
-		# 	cart = db.getSisterDB('cart').carts;
-		# 	col.update(
+			cart= []
+			for i in session['cart']:	
+				addto=[]
+				name = products.find_one({"_id": ObjectId(i)})["name"]
+				category = products.find_one({"_id": ObjectId(i)})["category"]
+				quantity = products.find_one({"_id": ObjectId(i)})["quantity"]
+				description = products.find_one({"_id": ObjectId(i)})["description"]
+				price = products.find_one({"_id": ObjectId(i)})["price"]
+				addto.append(name)
+				addto.append(category)
+				addto.append(i)
+				addto.append(quantity)
+				addto.append(description)
+				addto.append(price)				
+				cart.append(addto)				
+
+			return render_template("cart.html", mail=session['email'], cart=cart)
+		elif request.method=="POST":
+			session["id"] = request.form['forcart']
+			session['cart'].append(request.form['forcart'])
+			session.modified=True
+			return redirect("/cart")
+
+@app.route("/delcart", methods=["GET", "POST"])
+def delcart():
+	if session['loggedin'] == True:
+		if request.method == "POST":
+			session["cart"].remove(request.form['delcart'])
+			session.modified=True
+			return redirect('/cart')
+
+
 
 #Cart buy function
 @app.route("/buy", methods=["GET", "POST"])

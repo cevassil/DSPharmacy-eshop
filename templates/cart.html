@@ -20,21 +20,17 @@
 </nav>
 <div class="content">
 		<div class="md-form mt-0" >
-			<form action="/search" method="post">
-                <input name="search" type="text">
-                <button type="submit">Αναζήτηση Προϊόντος</button>            
-            </form> 
 			{% for x in cart %}
-			<div class="container">
-				<h2 class='display-3'>{{x['name']}}<br></h2>
-				<h4>Price {{x['price']}} <br> Description: {{x['description']}} <br> Category: {{x['category']}}<br> Id: {{x['_id']}}  <br></h4>
-				<form action="{{url_for('cart') }}">
-				<button type="submit" value="Buy" href="{{ url_for('buy') }}">Αγορά</button>
-			</div>
-				
+				<div class="container">
+					<h2 class='display-3'>{{x[0]}}<br></h2>
+					<h4>Price {{x[5]}} <br> Description: {{x[4]}} <br> Category: {{x[1]}}<br> Id: {{x[2]}} <br></h4>
+					<form action="{{ url_for('delcart') }}" method="POST">
+						<input type="hidden" value="{{x[2]}}" name='delcart'>
+						<input type="submit" value="Αφαίρεση από το καλάθι"> 
+					</form>
+				</div>				
 			{% endfor %}
 		</div>
 	
-</div>
-	
+</div>	
 {% endblock %}

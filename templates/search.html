@@ -22,16 +22,16 @@
 		<div class="md-form mt-0" >
             <form action="/search" method="post">
                 <input name="search" type="text">
-                <button type="submit">Αναζήτηση Ταινίας</button>            
+                <button type="submit">Αναζήτηση Προϊόντος</button>            
             </form> 
 			{% for x in prod %}
 			<div class="container">
 				<h2 class='display-3'>{{x['name']}}<br></h2>
 				<h4>Price {{x['price']}} <br> Description: {{x['description']}} <br> Category: {{x['category']}} <br> Id: {{x['_id']}} <br></h4>
-                <form action="{{ url_for('index') }}" method="post">
-                    <input type="text" name="buy" placeholder="Ποσότητα" id="buy">                 
-                <button type="submit" value="Buy" href="{{ url_for('cart') }}">Προσθήκη στο Καλάθι</button> <hr>
-                </form>
+                <form action="{{ url_for('cart') }}" method="POST">
+					<input type="hidden" value="{{x['_id']}}" name='forcart'>
+					<input type="submit" value="Προσθήκη στο καλάθι"> 
+				</form>
 			</div>				
 			{% endfor %}
 		</div>
