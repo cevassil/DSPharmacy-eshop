@@ -13,13 +13,5 @@
 		"ssn": "01017054321",
 		"category": "user",
 		"orderHistory" : []
-	},
-	{
-		"name": "jim",
-		"email": "jim@mail.com",
-		"password": "jim",
-		"ssn": "31129912345",
-		"category": "user",
-		"orderHistory": []
 	}
 ]
