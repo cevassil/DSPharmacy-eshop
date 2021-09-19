@@ -3,14 +3,14 @@
 		"name": "Admin",
 		"email": "admin@dspharmacy.com",
 		"password": "admin",
-		"ssn": "19037500856",
+		"ssn": 19037500856,
 		"category": "admin"
 	},
 	{
 		"name": "costas",
 		"email": "costas@mail.com",
 		"password": "costas",
-		"ssn": "01017054321",
+		"ssn": 12119079865,
 		"category": "user",
 		"orderHistory" : []
 	}

@@ -4,13 +4,13 @@
 		"description": "Αναβράζον Δισκίο Παρακεταμόλης",
 		"price": 2,
 		"category": "Αναλγητικά",
-		"quantity": 5
+		"stock": 5
 	},
 	{
 		"name": "Depon",
 		"description": "Χαπι Παρακεταμόλης",
 		"price": 1,
 		"category": "Αναλγητικά",
-		"quantity": 3
+		"stock": 3
 	}
 ]
