@@ -14,6 +14,7 @@
 		<h1>DSPharmacy</h1>
 		<a href="{{ url_for('index') }}"><i class="fas fa-home"></i>Αρχική</a>
 		<a href="{{ url_for('cart') }}"><i class="fas fa-shopping-cart"></i></i>Καλάθι</a>
+        <a href="{{ url_for('orderHistory') }}"><i class="fas fa-history"></i></i>Ιστορικό παραγγελιών</a>
 		<a href="{{ url_for('deluser') }}"><i class="fas fa-user-times"></i></i>Διαγραφή Χρήστη</a>
 		<a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Αποσύνδεση</a>
 	</div>
@@ -22,13 +23,12 @@
 		<div class="md-form mt-0" >
 			{% for x in cart %}
 				<div class="container">
-					<h2 class='display-3'>{{x[0]}}<br></h2>
-					<h4>Description: {{x[4]}} <br> Category: {{x[1]}}<br> Id: {{x[2]}} <br>Price {{x[5]}}€ <br></h4>
-					
+					<h2 class='display-3'>{{x['name']}}<br></h2>
+					<h4> Description: {{x['description']}} <br> Category: {{x['category']}}<br> Id: {{x['_id']}} <br> Price: {{x['price']}}€  <br></h4>					
 				</div>				
 			{% endfor %}
 			<h3>Το σύνολο σας είναι:{{totalprice}}€</h3>
-			<form action="{{ url_for('buy') }}" method="POST">
+			<form action="{{ url_for('userhistory') }}" method="POST">
 				<input type="text" name="ccard" minlength="16" maxlength="16" placeholder="Card Number" id="ccard" required>
 				<input type="submit" value="Ολοκλήρωση αγοράς"> 
 			</form>

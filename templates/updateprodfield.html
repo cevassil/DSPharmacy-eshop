@@ -24,7 +24,7 @@
             <form action="{{ url_for('updateprodfield') }}" method="post">
 				<input type="text" name="name" value="{{name}}" id="name" required>
 				<input type="text" name="category" value="{{category}}" id="category" required>
-                <input type="number" step="1" name="quantity" value="{{quantity}}" id="quantity" required>
+                <input type="number" step="1" name="stock" value="{{stock}}" id="stock" required>
 				<input type="text" name="description" value="{{description}}" id="description" required>
                 <input type="number" step="1" name="price" value="{{price}}" id="price" required>
 				<input type="submit" value="Ενημέρωση βάσης">
@@ -32,7 +32,7 @@
 			{% for x in prod %}
 				<div class="container">
 				<h2 class='display-3'>{{x['name']}}<br></h2>
-            	<h4><br> Id: {{x['_id']}} <br></h4>
+            	<h4><br> Id: {{x['_id']}}<br></h4>
 			</div>				
 			{% endfor %}
 		</div>
