@@ -23,16 +23,16 @@
 		<div class="md-form mt-0" >
 			{% if history == [] %}
 			<a href="{{url_for('index') }}">Δεν έχετε εκτελέσει καμία παραγγελία</a>
-			{% endif %}
+			{% endif %}            
 			{% for x in history %}
+                <h1 class='display-3'> Order Start<br></h1>
 				{% for i in x %} 
                 <div class="container">
 					<h2 class='display-3'>{{i['name']}}<br></h2>
 					<h4> Description: {{i['description']}} <br> Category: {{i['category']}}<br> Id: {{i['_id']}} <br> Price: {{i['price']}}€  <br></h4> <br>
                 </div>	
                 {% endfor %}
-                <h2>Total Price: </h2>
-                <hr>			
+                <hr><hr>	
 			{% endfor %}
 		</div>
 </div>	
