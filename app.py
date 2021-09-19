@@ -26,6 +26,7 @@ def register():
 		password = request.form['password']
 		email = request.form['email']
 		ssn = request.form['ssn']
+#ssn validation
 		if int(ssn[:2]) <= 31:
 			if int(ssn[2:4]) <=12:
 				check = users.find_one({"email": email})
@@ -34,7 +35,7 @@ def register():
 					"name": username,
 					"email": email,
 					"password": password,
-					"ssn": ssn,
+					"ssn": int(ssn),
 					"category": "user",
 					"orderHistory": []})		
 				return redirect(url_for('login'))		
@@ -95,6 +96,7 @@ def admin():
 	else:
 		return redirect('/index')
 
+#For admin to add new entries to the database
 @app.route("/admin/addprod", methods=["GET", "POST"])
 def addprod():
 	if session['category'] == 'admin':
@@ -103,7 +105,7 @@ def addprod():
 		elif request.method == "POST":
 			name = request.form['name']
 			category = request.form['category']
-			quantity = int(request.form['quantity'])
+			stock = int(request.form['stock'])
 			description = request.form['description']
 			price = int(request.form['price'])
 			check = products.find_one({"name": name})
@@ -113,12 +115,12 @@ def addprod():
 				"description": description,
 				"price": price,
 				"category": category,
-				"quantity": quantity
+				"stock": stock
 				})
 			return redirect('/admin/addprod')
 		return render_template('addprod.html')
 	else: return redirect('/logout')
-
+#For admin to delete items from the database
 @app.route("/admin/delprod", methods=("GET", "POST"))
 def delprod():
 	if session['category'] == 'admin':
@@ -136,6 +138,7 @@ def delprod():
 		return render_template('delprod.html', prod=products.find({}))
 	else: return redirect('/logout')
 
+#For Admin to update a selected product's info
 @app.route("/admin/updateprod", methods=("GET", "POST"))
 def updateprod():
 	if session['category'] == 'admin':
@@ -150,19 +153,19 @@ def updateprod():
 				return redirect('/admin/updateprodfield')
 	else: return redirect('/logout')
 
+#For Admin to update a selected product's info
 @app.route("/admin/updateprodfield", methods=("GET", "POST"))
 def updateprodfield():
 	if session['category'] == 'admin':
 		if request.method == "GET":
 			name = products.find_one({"_id": ObjectId(session["id"])})["name"]
 			category = products.find_one({"_id": ObjectId(session["id"])})["category"]
-			quantity = products.find_one({"_id": ObjectId(session["id"])})["quantity"]
+			stock = products.find_one({"_id": ObjectId(session["id"])})["stock"]
 			description = products.find_one({"_id": ObjectId(session["id"])})["description"]
 			price = products.find_one({"_id": ObjectId(session["id"])})["price"]
-			return render_template("updateprodfield.html", name=name, category=category, quantity=quantity, description=description, price=price)
+			return render_template("updateprodfield.html", name=name, category=category, stock=stock, description=description, price=price)
 		if request.method == "POST":
-			print(session["id"])
-			products.update_one({"_id": ObjectId(session["id"])}, {"$set": {"name": request.form["name"], "category": request.form["category"], "quantity": int(request.form["quantity"]), "description": request.form["description"], "price": int(request.form["price"])}})
+			products.update_one({"_id": ObjectId(session["id"])}, {"$set": {"name": request.form["name"], "category": request.form["category"], "stock": int(request.form["stock"]), "description": request.form["description"], "price": int(request.form["price"])}})
 		return redirect("/admin/updateprod")
 	else: return redirect("/logout")
 
@@ -179,7 +182,7 @@ def search():
 			return render_template("search.html", mail=session['email'], prod=prodresult )
 	else: return redirect('/logout')		
 
-
+#Current Session user's shopping cart
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
 	if session['loggedin'] == True:
@@ -189,13 +192,11 @@ def cart():
 				addto=[]
 				name = products.find_one({"_id": ObjectId(i)})["name"]
 				category = products.find_one({"_id": ObjectId(i)})["category"]
-				quantity = products.find_one({"_id": ObjectId(i)})["quantity"]
 				description = products.find_one({"_id": ObjectId(i)})["description"]
 				price = products.find_one({"_id": ObjectId(i)})["price"]
 				addto.append(name)
 				addto.append(category)
 				addto.append(i)
-				addto.append(quantity)
 				addto.append(description)
 				addto.append(price)				
 				cart.append(addto)				
@@ -207,7 +208,7 @@ def cart():
 			session.modified=True
 			return redirect("/cart")
 	else: return redirect('/logout')
-
+#Delete an item from the cart
 @app.route("/delcart", methods=["GET", "POST"])
 def delcart():
 	if session['loggedin'] == True:
@@ -229,9 +230,33 @@ def buy():
 				totalprice += (cartitems['price'])
 				cart.append(cartitems)
 			return render_template("buy.html", mail=session['email'], cart=cart, totalprice=totalprice)
-	else: return redirect('logout')
+	else: return redirect('/logout')
+
+@app.route("/userhistory", methods=["GET", "POST"])
+def userhistory():
+	if session['loggedin'] == True:
+		if request.method == "POST":
+			cart = []
+			totalprice = 0
+			for i in session['cart']:
+				cartitems = products.find_one({'_id': ObjectId(i)})
+				totalprice += (cartitems['price'])
+				cart.append(cartitems)
+			users.update_one({"email": session["email"]}, {"$push": {"orderHistory": cart}})
+			session['cart'] = []
+			session.modified = True
+		return redirect('/orderHistory')
+	else: return redirect('/logout')
 
 
+@app.route("/orderHistory", methods=["GET", "POST"])
+def orderHistory():
+	if session['loggedin'] == True:
+		history = users.find_one({'email': session['email']})['orderHistory']
+		return render_template('orderHistory.html', history=history)
+	else: return redirect('/logout')
+
+#Deletes the user from the database then redirects to logout
 @app.route("/deluser")
 def deluser():
 	if session['loggedin'] == True:
