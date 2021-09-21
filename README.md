@@ -11,46 +11,20 @@
 | admin         | admin@dspharmacy.com | admin | admin |
 
 ### MongoDb data
-users: [
-	{
-		"name": "admin",
-		"email": "admin@dspharmacy.com",
-		"password": "admin",
-		"ssn": 19037500856,
-		"category": "admin"
-	}
-]
-products: [
-	{
-		"name": "Depon Maximum",
-		"description": "Αναβράζον Δισκίο Παρακεταμόλης",
-		"price": 2,
-		"category": "Αναλγητικά",
-		"stock": 5
-	},
-	{
-		"name": "Salospir",
-		"description": "Χάπια ασπιρίνης",
-		"price": 1,
-		"category": "Αναλγητικά",
-		"stock": 9
-	},
-	{
-		"name": "Seractil",
-		"description": "Χαπι δεξιβουπροφαίνης",
-		"price": 6,
-		"category": "Αντιφλεγμονώδες",
-		"stock": 5
-	},
-	{
-		"name": "Cipralex",
-		"description": "Αντικαταθλιπτικό φάρμακο που βοηθάει στην ομαλοποίηση των επιπέδων σεροτονίνης στον εγκέφαλο",
-		"price": 15,
-		"category": "Αντικαταθλιπτικά",
-		"stock": 10
-	}
-]
 
+ - users: [ 	{ 		"name": "admin", 		"email": "admin@dspharmacy.com",
+   		"password": "admin", 		"ssn": 19037500856, 		"category": "admin" 	}
+   ]
+ - products: [ 	{ 		"name": "Depon Maximum", 		"description": "Αναβράζον
+   Δισκίο Παρακεταμόλης", 		"price": 2, 		"category": "Αναλγητικά",
+   		"stock": 5 	}, 	{ 		"name": "Salospir", 		"description": "Χάπια
+   ασπιρίνης", 		"price": 1, 		"category": "Αναλγητικά", 		"stock": 9
+   	}, 	{ 		"name": "Seractil", 		"description": "Χαπι
+   δεξιβουπροφαίνης", 		"price": 6, 		"category": "Αντιφλεγμονώδες",
+   		"stock": 5 	}, 	{ 		"name": "Cipralex", 		"description":
+   "Αντικαταθλιπτικό φάρμακο που βοηθάει στην ομαλοποίηση των επιπέδων
+   σεροτονίνης στον εγκέφαλο", 		"price": 15, 		"category":
+   "Αντικαταθλιπτικά", 		"stock": 10 	} ]
  - ## Endpoints
  - ### Αρχική σελίδα
 	#### Σύνδεση/ Εγγραφή
