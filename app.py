@@ -229,6 +229,7 @@ def buy():
 				cartitems = products.find_one({'_id': ObjectId(i)})
 				totalprice += (cartitems['price'])
 				cart.append(cartitems)
+				products.update_one({'_id': ObjectId(i)}, {"$inc": {"stock": -1}})
 			return render_template("buy.html", mail=session['email'], cart=cart, totalprice=totalprice)
 	else: return redirect('/logout')
 
@@ -243,6 +244,7 @@ def userhistory():
 				totalprice += (cartitems['price'])
 				cart.append(cartitems)
 			users.update_one({"email": session["email"]}, {"$push": {"orderHistory": cart}})
+			products.delete_one({"stock": {"$eq": 0}})
 			session['cart'] = []
 			session.modified = True
 		return redirect('/orderHistory')
@@ -264,6 +266,8 @@ def deluser():
 			users.delete_one({ 'email': session['email'] })
 		return redirect("/logout")
 	else: return redirect('/logout')
+
+
 
 if __name__ == "__main__":
 	if not 'users' in db.list_collection_names():
