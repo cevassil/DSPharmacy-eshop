@@ -243,7 +243,7 @@ def userhistory():
 				totalprice += (cartitems['price'])
 				cart.append(cartitems)
 			users.update_one({"email": session["email"]}, {"$push": {"orderHistory": cart}})
-			products.delete_one({"stock": {"$eq": 0}})
+			products.delete_one({"stock": {"$lt": 1}})
 			session['cart'] = []
 			session.modified = True
 		return redirect('/orderHistory')
