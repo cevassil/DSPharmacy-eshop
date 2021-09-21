@@ -7,10 +7,24 @@
 		"stock": 5
 	},
 	{
-		"name": "Depon",
-		"description": "Χαπι Παρακεταμόλης",
+		"name": "Salospir",
+		"description": "Χάπια ασπιρίνης",
 		"price": 1,
 		"category": "Αναλγητικά",
-		"stock": 3
+		"stock": 9
+	},
+	{
+		"name": "Seractil",
+		"description": "Χαπι δεξιβουπροφαίνης",
+		"price": 6,
+		"category": "Αντιφλεγμονώδες",
+		"stock": 5
+	},
+	{
+		"name": "Cipralex",
+		"description": "Αντικαταθλιπτικό φάρμακο που βοηθάει στην ομαλοποίηση των επιπέδων σεροτονίνης στον εγκέφαλο",
+		"price": 15,
+		"category": "Αντικαταθλιπτικά",
+		"stock": 10
 	}
 ]
