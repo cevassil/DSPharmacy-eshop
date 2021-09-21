@@ -1,12 +1,11 @@
-from os import name
-import re
+import os
 from bson import ObjectId
 from pymongo import MongoClient
 from flask import Flask, render_template, request, redirect, session, url_for
 import json
 
 #Connection to database
-client = MongoClient('mongodb://localhost:27017')
+client = MongoClient(os.getenv("MONGO_HOST", "0.0.0.0"), 27017)
 db = client['DSPharmacy']
 users = db['users']
 products = db['products']
@@ -280,4 +279,4 @@ if __name__ == "__main__":
 			products.insert_many(product)
 
 	
-	app.run(host='localhost', port=5000, debug=True)
+	app.run(host='0.0.0.0', port=5000, debug=True)
